@@ -62,12 +62,13 @@ Ersetze `[PROJEKT-NAME]` und setze den initialen Status:
 /planner Implementiere Feature X
 ```
 
-## Die 7 Agents
+## Die 8 Agents
 
 | Command | Wann verwenden |
 |---------|---------------|
 | `/planner` | Neues Feature planen, Acceptance Criteria definieren |
 | `/architect` | Technisches Design, Datenmodell entwerfen |
+| `/ux` | UI/UX Specs, Component Design, Accessibility |
 | `/database` | Migrations erstellen, RLS Policies |
 | `/builder` | Code schreiben, Features implementieren |
 | `/tester` | E2E Tests ausführen, AC verifizieren |
@@ -88,6 +89,13 @@ User: /architect
 → ARCHITECT entwirft:
   - Datenmodell (users, sessions)
   - Auth-Flow Diagramm
+
+User: /ux
+
+→ UX spezifiziert:
+  - Login-Form Component Spec
+  - States (default, loading, error)
+  - Accessibility Requirements
 
 User: /database
 

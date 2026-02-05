@@ -9,10 +9,11 @@ Ein leichtgewichtiges Framework für strukturierte Software-Entwicklung mit Clau
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    7 Spezialisierte Agents                   │
+│                    8 Spezialisierte Agents                   │
 ├─────────────────────────────────────────────────────────────┤
 │ /planner   → User Stories, Acceptance Criteria              │
 │ /architect → Design, Datenmodelle                           │
+│ /ux        → UI/UX Specs, Components, Accessibility         │
 │ /database  → Migrations, RLS Policies                       │
 │ /builder   → Code, Features, Fixes                          │
 │ /tester    → E2E Tests, Verifikation                        │
@@ -55,6 +56,7 @@ your-project/
 │   ├── commands/
 │   │   ├── planner.md      # /planner Command
 │   │   ├── architect.md    # /architect Command
+│   │   ├── ux.md           # /ux Command
 │   │   ├── database.md     # /database Command
 │   │   ├── builder.md      # /builder Command
 │   │   ├── tester.md       # /tester Command
@@ -69,15 +71,16 @@ your-project/
 ## Workflow
 
 ```
-/planner → /architect → /database → /builder → /tester → /reviewer
+/planner → /architect → /ux → /database → /builder → /tester → /reviewer
 ```
 
 1. **PLANNER** definiert Acceptance Criteria
 2. **ARCHITECT** entwirft die Lösung
-3. **DATABASE** erstellt Migrations
-4. **BUILDER** implementiert
-5. **TESTER** verifiziert
-6. **REVIEWER** prüft Security
+3. **UX** spezifiziert Components & Accessibility
+4. **DATABASE** erstellt Migrations
+5. **BUILDER** implementiert
+6. **TESTER** verifiziert
+7. **REVIEWER** prüft Security
 
 ## Kernkonzepte
 

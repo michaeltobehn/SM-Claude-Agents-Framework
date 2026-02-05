@@ -14,6 +14,7 @@
 |-------|-------|---------|---------|
 | Plan | PLANNER | User Stories, Requirements | `/planner` |
 | Design | ARCHITECT | Konzepte, Datenmodell-Design | `/architect` |
+| UX | UX | UI/UX Specs, Components, Accessibility | `/ux` |
 | DB | DATABASE | Migrations, RLS Policies | `/database` |
 | Code | BUILDER | Features, API, UI, Fixes | `/builder` |
 | Test | TESTER | E2E Tests, Verifikation | `/tester` |
@@ -23,7 +24,7 @@
 ### Workflow
 
 ```
-/planner → /architect → /database → /builder → /tester → /reviewer
+/planner → /architect → /ux → /database → /builder → /tester → /reviewer
 ```
 
 ### Kritische Regeln
