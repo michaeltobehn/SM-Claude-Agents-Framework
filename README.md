@@ -22,6 +22,14 @@ Ein leichtgewichtiges Framework für strukturierte Software-Entwicklung mit Clau
 └─────────────────────────────────────────────────────────────┘
 ```
 
+## Dokumentation
+
+| Dokument | Inhalt |
+|----------|--------|
+| [QUICK-START.md](docs/QUICK-START.md) | Installation und Erste Schritte |
+| [AGENT-WORKFLOW.md](docs/AGENT-WORKFLOW.md) | Handoff-Protokoll und Rollentrennung |
+| [DEPLOYMENT-STRATEGY.md](docs/DEPLOYMENT-STRATEGY.md) | Wann und wie deployen |
+
 ## Quick Install
 
 ```bash
@@ -64,7 +72,10 @@ your-project/
 │   │   └── status.md       # /status Command
 │   └── settings.json       # Claude Code Einstellungen
 ├── docs/
-│   └── CONTINUITY.md       # Ledger für Session-State
+│   ├── CONTINUITY.md       # Ledger für Session-State
+│   └── backlog/            # User Stories (optional)
+│       ├── README.md       # Sprint-Übersicht
+│       └── _template.md    # Story-Template
 └── CLAUDE.md               # Projekt-Anweisungen
 ```
 
@@ -83,6 +94,16 @@ your-project/
 7. **REVIEWER** prüft Security
 
 ## Kernkonzepte
+
+### Strikte Rollentrennung
+
+```
+BUILDER schreibt Code      → TESTER schreibt Tests
+TESTER findet Bugs         → BUILDER fixt
+REVIEWER findet Issues     → BUILDER fixt
+```
+
+Agents übernehmen **NIEMALS** Aufgaben anderer Agents!
 
 ### Acceptance Criteria (AC)
 
@@ -110,6 +131,13 @@ Zentraler Ledger für Session-State:
 - Aktiver Task mit AC-Tracking
 - Letzte Agent-Ergebnisse
 - Kontext für nächste Session
+
+### Handoff-Protokoll
+
+Nach Abschluss **MUSS** jeder Agent:
+1. Status auf `review` setzen
+2. Handoff im Agent Log dokumentieren
+3. Nächsten Agent benennen
 
 ## Anpassung
 

@@ -32,6 +32,8 @@
 - CONTINUITY.md VOR und NACH jedem Agent-Aufruf aktualisieren
 - Agents sind stateless - immer vollständigen Kontext übergeben
 - YAML für strukturierte Ergebnisse (token-effizient)
+- **Strikte Rollentrennung**: BUILDER schreibt KEINE Tests, TESTER fixt KEINEN Code
+- Nach Abschluss: Handoff an nächsten Agent dokumentieren
 
 ---
 
@@ -126,13 +128,66 @@ Ergänze hier projekt-spezifische Informationen:
 | App | https://... |
 
 ### Test-User
-| Email | Passwort | Verwendung |
-|-------|----------|------------|
-| test@example.com | Test123! | E2E Tests |
+
+**WICHTIG:** NUR verifizierte User verwenden! Keine Test-User erfinden!
+
+| Email | Passwort | Rolle | DB-ID | Verwendung |
+|-------|----------|-------|-------|------------|
+| test@example.com | Test123! | Standard | uuid-... | E2E Tests |
 
 ### Security-Regeln
-- ...
+- signOut() NIEMALS mit scope:'local'
+- Token nur via Hash-Fragment (#access_token) oder POST
+- Keine Secrets im Code
 
 ### Lessons Learned
 - **DATUM**: Beschreibung. **Lektion:** ...
 -->
+
+---
+
+## Database Migration Regeln
+
+### KRITISCH: Migration = Datei + Push + Verify
+
+**Regel:** Eine Migration gilt erst als DONE wenn alle 3 Schritte erfolgreich:
+
+```bash
+# 1. Migration erstellen
+# supabase/migrations/NNN_beschreibung.sql
+
+# 2. Push zur Remote-DB
+supabase db push
+
+# 3. Verify - Local = Remote
+supabase migration list --linked
+```
+
+### Naming Convention
+
+```
+✅ RICHTIG: NNN_beschreibung.sql (fortlaufende Nummer)
+   Beispiel: 025_add_audit_log.sql
+
+❌ FALSCH: YYYYMMDD_beschreibung.sql (Datum)
+   Problem: Mehrere Migrations am selben Tag → Duplikate
+```
+
+---
+
+## TESTER Agent - Spezifische Regeln
+
+**1. Test-Konfiguration:**
+- ALLE URLs, Credentials und Test-Daten aus `e2e/test.config.ts` verwenden
+- NIEMALS eigene Test-User, URLs oder Domains erfinden
+- Bei fehlenden Daten: User fragen, nicht raten
+
+**2. Test-Ausführung:**
+- Tests über UI ausführen, nicht nur API-Tests
+- Screenshots bei wichtigen Schritten speichern
+- Cleanup nach jedem Test (temporäre Daten löschen)
+
+**3. Pflicht-Importe in Test-Dateien:**
+```typescript
+import { URLS, TEST_USERS, TIMEOUTS } from './test.config'
+```
