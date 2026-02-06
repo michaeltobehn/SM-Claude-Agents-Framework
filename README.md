@@ -2,6 +2,8 @@
 
 > Multi-Agent Orchestration für Claude Code Projekte
 > Inspiriert von [BMAD Quick Flow](https://github.com/bmad-code-org/BMAD-METHOD)
+>
+> **[Notion Dokumentation](https://www.notion.so/Claude-Code-Agent-System-BMAD-Lite-2fe1bad1d18a819593d4cd231c3a6a92)**
 
 ## Übersicht
 
