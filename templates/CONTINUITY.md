@@ -1,91 +1,109 @@
-# PROJECT_NAME Migration – Continuity Ledger
+# CONTINUITY.md – Projektstand
 
-> Zentrale State-Datei für Multi-Agent Orchestration
-> Immer VOR und NACH jedem Agent-Aufruf aktualisieren!
+> Wird von JEDEM Agent gelesen (Kontext) und aktualisiert (nach Abschluss).
+> Format ist FEST – keine Abschnitte hinzufügen oder entfernen!
+
+---
+
+## Meta
+
+| Key | Value |
+|-----|-------|
+| **App** | [AUTH / TRAX / FRIDAY / SUBZ / SUITE-WIDE] |
+| **Phase** | [z.B. Phase 1 – MVP] |
+| **Sprint/Milestone** | [z.B. Auth-System implementieren] |
+| **Last Updated** | [YYYY-MM-DD HH:MM] |
+| **Last Agent** | [/product, /planner, /architect, /ux, /database, /builder, /tester, /reviewer, /status] |
 
 ---
 
 ## Aktueller Status
 
-| Feld | Wert |
-|------|------|
-| **Phase** | Phase 1 – Setup |
-| **Aktiver Task** | – |
-| **Blocker** | – |
-| **Letzte Änderung** | YYYY-MM-DD |
-| **Test-Status** | – |
-| **Security-Status** | – |
-| **Deployment** | – |
+**Status:** 🟢 On Track | 🟡 Verzögert | 🔴 Blocked
+
+**Zusammenfassung (1-2 Sätze):**
+[Was wurde zuletzt gemacht? Wo stehen wir?]
 
 ---
 
-## Sprint Backlog (Phase 1)
+## Letzter Agent-Output
 
-> **Detaillierte Stories:** [docs/backlog/phase-1/](docs/backlog/phase-1/)
+**Agent:** /[name]
+**Aktion:** [Was wurde gemacht?]
+**Ergebnis:** ✅ Abgeschlossen | 🔄 Teilweise | ❌ Fehlgeschlagen
+**Dateien geändert/erstellt:**
+- `path/to/file1.ts` – [was wurde geändert]
+- `path/to/file2.ts` – [was wurde geändert]
 
-| Story | Titel | Prio | Status | Agent | Effort | Risk |
-|-------|-------|------|--------|-------|--------|------|
-| [US-1.1](docs/backlog/phase-1/US-1.1-story-name.md) | Story Titel | high | 🗂 ready | /planner | 1-2h | 🟢 LOW |
-| [US-1.2](docs/backlog/phase-1/US-1.2-story-name.md) | Story Titel | medium | 🗂 ready | /architect | 2-4h | 🟡 MEDIUM |
+**Testing Notes (nur /builder):**
+[Hinweise für /tester – was manuell geprüft werden muss]
 
-### Phase 1 Ziel
+---
 
-**Beschreibung:** Was soll am Ende der Phase erreicht sein?
+## Nächster Schritt
 
-### Empfohlene Reihenfolge
-
+**Empfohlener Agent:** `/[agent]`
+**Konkreter Prompt:**
 ```
-1. US-1.1              ← Keine Abhängigkeiten
-   |
-   ▼
-2. US-1.2              ← Baut auf US-1.1 auf
+/[agent] [Exakter Prompt, den der User copy-pasten kann]
 ```
 
-### Inkonsistenzen (aus ARCHITECT-Analyse)
-
-| ID | Severity | Beschreibung | Adressiert durch |
-|----|----------|--------------|------------------|
-| INC-001 | CRITICAL | Beschreibung | US-1.x |
-
----
-
-## Agent Log
-
-> Letzte Ergebnisse der Agents
-
-### Letzter Agent-Aufruf
-
-| Feld | Wert |
-|------|------|
-| **Agent** | /agent-name |
-| **Task** | Was wurde gemacht |
-| **Status** | ✅ complete / ❌ failed / 🔄 in progress |
-| **Ergebnis** | Zusammenfassung |
-| **Handoff** | → /nächster-agent [Prompt] |
-
-### Vorherige Ergebnisse
-
-<!-- Ältere Einträge hier einfügen, neueste oben -->
+**Alternativ (falls Blocker):**
+```
+/[agent] [Alternativer Pfad]
+```
 
 ---
 
-## Lessons Learned
+## Offene Entscheidungen
 
-> Was haben wir gelernt? Was soll nicht wieder passieren?
-
-- <!-- Lesson 1 -->
+| # | Frage | Kontext | Entscheidung |
+|---|-------|---------|-------------|
+| 1 | [Offene Frage] | [Warum relevant] | ⏳ Offen / ✅ Entschieden: [Was] |
 
 ---
 
-## Status-Legende
+## Blocker
 
-| Symbol | Bedeutung |
-|--------|-----------|
-| 🗂 ready | Bereit zur Bearbeitung |
-| 🔄 in progress | In Arbeit |
-| 🏗 IMPL DONE | Implementiert, Tests ausstehend |
-| ✅ COMPLETE | Abgeschlossen und verifiziert |
-| ❌ BLOCKED | Blockiert |
-| 🟢 LOW | Niedriges Risiko |
-| 🟡 MEDIUM | Mittleres Risiko |
-| 🔴 HIGH | Hohes Risiko |
+| # | Blocker | Seit | Impact | Owner |
+|---|---------|------|--------|-------|
+| – | Keine aktuellen Blocker | – | – | – |
+
+---
+
+## Abgeschlossene User Stories (aktuelle Phase)
+
+| US-ID | Titel | Status | Agent-Chain |
+|-------|-------|--------|-------------|
+| US-001 | [Titel] | ✅ Done / 🔄 In Progress | /planner → /architect → /builder → /tester ✅ |
+
+---
+
+## Backlog-Referenzen
+
+Aktive Specs in `docs/backlog/`:
+- [ ] `docs/backlog/US-001-[name].md` – [Status]
+- [ ] `docs/backlog/US-002-[name].md` – [Status]
+
+---
+
+## Loop-Tracker
+
+> Bei Tester→Builder oder Reviewer→Builder Rückschleifen hier tracken.
+> Max 2 Loops, dann Eskalation an User.
+
+| Datum | Loop | Agent-Pair | Issue | Resolution | Loop # |
+|-------|------|-----------|-------|------------|--------|
+| – | – | – | – | – | – |
+
+---
+
+## Session-Historie (letzte 5)
+
+| Datum | Agent | Aktion | Ergebnis |
+|-------|-------|--------|----------|
+| [YYYY-MM-DD] | /[agent] | [Was] | ✅/❌ |
+
+---
+
+*CONTINUITY.md Template v1.0 | BMAD Lite v3.0*

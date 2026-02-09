@@ -1,87 +1,170 @@
----
-id: US-X.Y
-title: Kurzer Titel
-status: ready
-priority: high | medium | low
-phase: X
-created: YYYY-MM-DD
-updated: YYYY-MM-DD
-assigned_agent: null
-depends_on: []
-blocks: []
-effort: "Xh"
-risk: low | medium | high
----
+# US-[ID]: [Titel]
 
-# US-X.Y: Kurzer Titel
+> Erstellt von: /planner | Datum: [YYYY-MM-DD]
+> App: [AUTH / TRAX / FRIDAY / SUBZ]
+> Priorität: [P0-Critical / P1-High / P2-Medium / P3-Low]
+
+---
 
 ## User Story
 
-**Als** [Rolle]
-**möchte ich** [Funktion/Feature]
-**damit** [Nutzen/Wert]
-
-## Acceptance Criteria
-
-| ID | Given | When | Then | Verification | Status |
-|----|-------|------|------|--------------|--------|
-| AC-X.Y.1 | [Ausgangssituation] | [Aktion] | [Erwartetes Ergebnis] | e2e/unit/manual | ⏳ |
-| AC-X.Y.2 | [Ausgangssituation] | [Aktion] | [Erwartetes Ergebnis] | e2e/unit/manual | ⏳ |
-
-### AC-Status Legende
-
-- ⏳ Ausstehend
-- ✅ Verifiziert
-- ❌ Fehlgeschlagen
-- 🚫 Blocked
-
-## Technical Notes
-
-<!-- Technische Details, betroffene Dateien, API-Struktur etc. -->
-
-**Betroffene Dateien:**
-- `src/...`
-- `api/...`
-
-**Datenbank:**
-- Tabelle: X
-- RLS Policy: Y
-
-**Abhängigkeiten:**
-- Package Z
-
-## Definition of Done
-
-- [ ] TypeScript kompiliert ohne Fehler
-- [ ] ESLint ohne Warnungen
-- [ ] Alle AC ✅ verifiziert
-- [ ] E2E Tests geschrieben (wenn Verification = e2e)
-- [ ] Security-Review passed (bei Auth/Admin Features)
-- [ ] CONTINUITY.md aktualisiert
-- [ ] Code-Review/PR approved
-
-## Out of Scope
-
-<!-- Was gehört NICHT zu dieser Story -->
-
-- Feature A (separate Story)
-- Refactoring B (Tech Debt)
-
-## Open Questions
-
-<!-- Offene Fragen an Stakeholder -->
-
-- [ ] Frage 1?
-- [x] Frage 2? → **Antwort**
-
-## Agent Log
-
-| Datum | Agent | Aktion | Ergebnis |
-|-------|-------|--------|----------|
-| YYYY-MM-DD | /planner | Story erstellt | ready |
+**Als** [Rolle: Admin / Member / Kunde / System]
+**möchte ich** [Funktion/Aktion],
+**damit** [Nutzen/Geschäftswert].
 
 ---
 
-## Notizen
+## Acceptance Criteria
 
-<!-- Freie Notizen während der Implementierung -->
+### AC-1: [Kurztitel]
+- **Given:** [Ausgangszustand]
+- **When:** [Aktion/Trigger]
+- **Then:** [Erwartetes Ergebnis]
+- **Verification:** [e2e / unit / manual]
+
+### AC-2: [Kurztitel]
+- **Given:** [Ausgangszustand]
+- **When:** [Aktion/Trigger]
+- **Then:** [Erwartetes Ergebnis]
+- **Verification:** [e2e / unit / manual]
+
+### AC-3: [Kurztitel]
+- **Given:** [Ausgangszustand]
+- **When:** [Aktion/Trigger]
+- **Then:** [Erwartetes Ergebnis]
+- **Verification:** [e2e / unit / manual]
+
+---
+
+## Scope
+
+### In Scope
+- [Was gehört dazu]
+
+### Out of Scope
+- [Was explizit NICHT dazugehört]
+
+---
+
+## Technical Notes (/architect)
+
+> Wird von /architect ausgefüllt nach technischem Design.
+
+**Betroffene Tabellen:**
+- [Tabelle] – [Was ändert sich]
+
+**API Endpoints:**
+- `[METHOD] /api/[path]` – [Beschreibung]
+
+**Komponenten:**
+- `[ComponentName]` – [Beschreibung]
+
+**Dependencies:**
+- [Bestehende Abhängigkeiten oder neue Packages]
+
+---
+
+## UX Notes (/ux)
+
+> Wird von /ux ausgefüllt nach UI-Spezifikation.
+
+**User Flow:**
+1. [Schritt 1]
+2. [Schritt 2]
+3. [Schritt 3]
+
+**Component States:**
+- Loading: [Beschreibung]
+- Empty: [Beschreibung]
+- Error: [Beschreibung]
+- Success: [Beschreibung]
+
+**Responsive:**
+- Mobile: [Verhalten]
+- Desktop: [Verhalten]
+
+---
+
+## Database Notes (/database)
+
+> Wird von /database ausgefüllt nach Migration.
+
+**Migration:**
+- File: `drizzle/[NNNN]_[name].sql`
+- Rollback: `drizzle/[NNNN]_[name]_rollback.sql`
+
+**RLS Policies:**
+- [Policy-Name] – [Beschreibung]
+
+---
+
+## Implementation Notes (/builder)
+
+> Wird von /builder ausgefüllt nach Implementierung.
+
+**Branch:** `feature/US-[ID]-[kurzbeschreibung]`
+
+**Dateien erstellt/geändert:**
+- `[path]` – [Was]
+
+**Testing Notes für /tester:**
+- [Worauf besonders achten]
+- [Bekannte Edge Cases]
+- [Setup-Schritte für manuellen Test]
+
+---
+
+## Test Results (/tester)
+
+> Wird von /tester ausgefüllt nach Verifikation.
+
+| AC | Status | Notes |
+|----|--------|-------|
+| AC-1 | ✅ / ❌ | [Details] |
+| AC-2 | ✅ / ❌ | [Details] |
+| AC-3 | ✅ / ❌ | [Details] |
+
+**Auth-Tests (Pflicht bei Auth-Änderungen):**
+- [ ] Login funktioniert
+- [ ] Logout invalidiert Session (nach Reload geprüft!)
+- [ ] Protected Route blockt unauthentifizierte User
+- [ ] RLS Policy greift korrekt
+
+**Ergebnis:** ✅ Alle ACs bestanden / ❌ Rückgabe an /builder (Loop #[N])
+
+---
+
+## Review (/reviewer)
+
+> Wird von /reviewer ausgefüllt als letzter Check.
+
+**Security-Checkliste:**
+- [ ] Keine Secrets im Code
+- [ ] Input Validation auf allen Endpoints
+- [ ] RLS Policies vorhanden und korrekt
+- [ ] Keine `any` Types
+- [ ] Keine ungenutzten Dependencies
+
+**Approval:** ✅ Approved / ⚠️ Changes Required / 🚫 Blocked
+
+**Findings:**
+- [Finding 1]
+- [Finding 2]
+
+---
+
+## Status-Tracking
+
+| Agent | Status | Datum | Notes |
+|-------|--------|-------|-------|
+| /planner | ✅ | [YYYY-MM-DD] | Story definiert |
+| /architect | ⏳ | – | – |
+| /ux | ⏳ | – | – |
+| /database | ⏳ | – | – |
+| /builder | ⏳ | – | – |
+| /tester | ⏳ | – | – |
+| /reviewer | ⏳ | – | – |
+
+---
+
+*Backlog Template v1.0 | BMAD Lite v3.0*
