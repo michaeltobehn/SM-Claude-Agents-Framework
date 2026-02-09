@@ -1,4 +1,4 @@
-# [PROJEKT-NAME] - Continuity Ledger
+# PROJECT_NAME Migration – Continuity Ledger
 
 > Zentrale State-Datei für Multi-Agent Orchestration
 > Immer VOR und NACH jedem Agent-Aufruf aktualisieren!
@@ -9,81 +9,83 @@
 
 | Feld | Wert |
 |------|------|
-| **Phase** | Setup |
-| **Aktiver Task** | Keiner |
-| **Blocker** | Keine |
-| **Letzte Änderung** | YYYY-MM-DD HH:MM |
+| **Phase** | Phase 1 – Setup |
+| **Aktiver Task** | – |
+| **Blocker** | – |
+| **Letzte Änderung** | YYYY-MM-DD |
+| **Test-Status** | – |
+| **Security-Status** | – |
+| **Deployment** | – |
 
 ---
 
-## Aktiver Task (aktuell: keiner)
+## Sprint Backlog (Phase 1)
 
-<!--
-Template für aktiven Task:
+> **Detaillierte Stories:** [docs/backlog/phase-1/](docs/backlog/phase-1/)
 
-### [TASK-ID] Task-Name
+| Story | Titel | Prio | Status | Agent | Effort | Risk |
+|-------|-------|------|--------|-------|--------|------|
+| [US-1.1](docs/backlog/phase-1/US-1.1-story-name.md) | Story Titel | high | 🗂 ready | /planner | 1-2h | 🟢 LOW |
+| [US-1.2](docs/backlog/phase-1/US-1.2-story-name.md) | Story Titel | medium | 🗂 ready | /architect | 2-4h | 🟡 MEDIUM |
 
-**Agent:** /builder | **Status:** in_progress | **Start:** YYYY-MM-DD
+### Phase 1 Ziel
 
-#### Acceptance Criteria
-| ID | AC | Status | Verifiziert |
-|----|-----|--------|-------------|
-| AC-001 | Given X, When Y, Then Z | ⏳ | - |
+**Beschreibung:** Was soll am Ende der Phase erreicht sein?
 
-#### DoD Checkliste
-- [ ] Code kompiliert
-- [ ] Lint grün
-- [ ] Tests geschrieben
+### Empfohlene Reihenfolge
 
-#### Notizen
-- ...
--->
-
----
-
-## Abgeschlossene Tasks (letzte 5)
-
-<!--
-### ✅ Task-Name
-**Agent:** /builder | **Abgeschlossen:** YYYY-MM-DD | **Status:** COMPLETED
-
-**Ergebnis:** Kurze Zusammenfassung
--->
-
----
-
-## Phasen (optional)
-
-| Phase | Name | Status |
-|-------|------|--------|
-| 1 | Setup | ⏳ In Arbeit |
-| 2 | Feature X | ⏸️ Wartend |
-
----
-
-## Letzte Agent-Ergebnisse
-
-### BUILDER
-```yaml
-status: "not_started"
+```
+1. US-1.1              ← Keine Abhängigkeiten
+   |
+   ▼
+2. US-1.2              ← Baut auf US-1.1 auf
 ```
 
-### TESTER
-```yaml
-status: "not_started"
-```
+### Inkonsistenzen (aus ARCHITECT-Analyse)
 
-### REVIEWER
-```yaml
-status: "not_started"
-```
+| ID | Severity | Beschreibung | Adressiert durch |
+|----|----------|--------------|------------------|
+| INC-001 | CRITICAL | Beschreibung | US-1.x |
 
 ---
 
-## Kontext für nächste Session
+## Agent Log
 
-**Nächster Schritt:** [Beschreibung]
+> Letzte Ergebnisse der Agents
+
+### Letzter Agent-Aufruf
+
+| Feld | Wert |
+|------|------|
+| **Agent** | /agent-name |
+| **Task** | Was wurde gemacht |
+| **Status** | ✅ complete / ❌ failed / 🔄 in progress |
+| **Ergebnis** | Zusammenfassung |
+| **Handoff** | → /nächster-agent [Prompt] |
+
+### Vorherige Ergebnisse
+
+<!-- Ältere Einträge hier einfügen, neueste oben -->
 
 ---
 
-*Letzte Aktualisierung: YYYY-MM-DD HH:MM*
+## Lessons Learned
+
+> Was haben wir gelernt? Was soll nicht wieder passieren?
+
+- <!-- Lesson 1 -->
+
+---
+
+## Status-Legende
+
+| Symbol | Bedeutung |
+|--------|-----------|
+| 🗂 ready | Bereit zur Bearbeitung |
+| 🔄 in progress | In Arbeit |
+| 🏗 IMPL DONE | Implementiert, Tests ausstehend |
+| ✅ COMPLETE | Abgeschlossen und verifiziert |
+| ❌ BLOCKED | Blockiert |
+| 🟢 LOW | Niedriges Risiko |
+| 🟡 MEDIUM | Mittleres Risiko |
+| 🔴 HIGH | Hohes Risiko |
