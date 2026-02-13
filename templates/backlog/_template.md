@@ -20,19 +20,19 @@
 - **Given:** [Ausgangszustand]
 - **When:** [Aktion/Trigger]
 - **Then:** [Erwartetes Ergebnis]
-- **Verification:** [e2e / unit / manual]
+- **Verification:** [e2e / unit / api / manual]
 
 ### AC-2: [Kurztitel]
 - **Given:** [Ausgangszustand]
 - **When:** [Aktion/Trigger]
 - **Then:** [Erwartetes Ergebnis]
-- **Verification:** [e2e / unit / manual]
+- **Verification:** [e2e / unit / api / manual]
 
 ### AC-3: [Kurztitel]
 - **Given:** [Ausgangszustand]
 - **When:** [Aktion/Trigger]
 - **Then:** [Erwartetes Ergebnis]
-- **Verification:** [e2e / unit / manual]
+- **Verification:** [e2e / unit / api / manual]
 
 ---
 
@@ -118,17 +118,23 @@
 
 > Wird von /tester ausgefüllt nach Verifikation.
 
-| AC | Status | Notes |
-|----|--------|-------|
-| AC-1 | ✅ / ❌ | [Details] |
-| AC-2 | ✅ / ❌ | [Details] |
-| AC-3 | ✅ / ❌ | [Details] |
+| AC | Verification | Status | Notes |
+|----|-------------|--------|-------|
+| AC-1 | e2e / unit / api / manual | ✅ / ❌ | [Details] |
+| AC-2 | e2e / unit / api / manual | ✅ / ❌ | [Details] |
+| AC-3 | e2e / unit / api / manual | ✅ / ❌ | [Details] |
 
 **Auth-Tests (Pflicht bei Auth-Änderungen):**
 - [ ] Login funktioniert
 - [ ] Logout invalidiert Session (nach Reload geprüft!)
 - [ ] Protected Route blockt unauthentifizierte User
 - [ ] RLS Policy greift korrekt
+
+**Unit/API Test Coverage (falls applicable):**
+```
+pnpm vitest run --coverage
+Statements: [X]% | Branches: [X]% | Functions: [X]% | Lines: [X]%
+```
 
 **Ergebnis:** ✅ Alle ACs bestanden / ❌ Rückgabe an /builder (Loop #[N])
 
@@ -167,4 +173,4 @@
 
 ---
 
-*Backlog Template v1.0 | BMAD Lite v3.0*
+*Backlog Template v1.1 | BMAD Lite v3.2*

@@ -33,6 +33,8 @@
 | Linting | Biome | – |
 | Package Manager | pnpm | – |
 | Monorepo | Turborepo | – |
+| Testing (Unit) | Vitest + React Testing Library | – |
+| Testing (E2E) | Playwright | – |
 | Hosting | Vercel | – |
 | Email | Resend | – |
 
@@ -42,6 +44,7 @@
 - ❌ styled-components / CSS Modules (wir nutzen Tailwind)
 - ❌ Redux / MobX (wir nutzen Zustand)
 - ❌ Express / Fastify (wir nutzen Next.js API Routes)
+- ❌ Jest (wir nutzen Vitest)
 
 ---
 
@@ -155,6 +158,25 @@ import { Button } from "../../../packages/ui/button";
 - `docs: update CONTINUITY.md after Phase 1 completion`
 - Keine Mega-Commits – max 3 Dateien pro Commit bei Features
 
+### Code-Qualitätsprinzip: Idiomatic over Expedient
+
+Jede Implementierung folgt dem idiomatischen Weg der verwendeten Technologie:
+
+- **Canonical Patterns:** Supabase RLS statt manueller Auth-Checks. Next.js Server Actions statt custom API-Wrapper. Playwright Role Selectors statt CSS-Selektoren. Vitest für Unit Tests statt Jest. React Testing Library `getByRole` statt `querySelector`.
+- **Keine impliziten Shortcuts:** Wenn eine Lösung vom dokumentierten Weg einer Library/eines Frameworks abweicht, ist das ein Signal, nicht eine Lösung. Eskalation an `/architect`.
+- **Intentional Simplicity:** Einfachheit ist erwünscht – aber nur wenn sie bewusst gewählt wird (YAGNI/KISS), nicht weil die richtige Lösung zu aufwändig erscheint.
+- **No Broken Windows:** Kein "erstmal so, später besser." Wenn die richtige Lösung jetzt nicht machbar ist, wird das als Blocker dokumentiert – nicht als Workaround implementiert.
+
+**Entscheidungsregel für alle Agents:**
+```
+Ist die Lösung der dokumentierte/idiomatische Weg?
+  → JA: Implementieren
+  → NEIN: Warum nicht?
+    → Constraint (Zeit, Tooling, Dependency): Eskalation an /architect
+    → Overengineering (YAGNI): Einfachere Lösung MIT Begründung
+    → Unbekannt: Recherche, dann entscheiden
+```
+
 ---
 
 ## Security-Constraints
@@ -234,6 +256,11 @@ RESEND_API_KEY=                # NUR wo E-Mail nötig
 - Mehr als 3 neue Dateien → Beschreibe erst den Plan
 - Neue Dependency → STOP, frag nach Freigabe
 - Arbeite IMMER auf Feature Branch: `feature/US-[ID]-[kurzbeschreibung]`
+- Idiomatische Patterns Pflicht (siehe Code-Qualitätsprinzip)
+
+### Für /reviewer speziell
+- Workaround-Erkennung als Approval-Kriterium
+- Nicht-idiomatische Patterns → Changes Required oder Blocked
 
 ### Für /database speziell
 - JEDE Migration hat ein Rollback-Script
@@ -244,6 +271,32 @@ RESEND_API_KEY=                # NUR wo E-Mail nötig
 - Nach Logout IMMER Page Reload, dann prüfen ob Session wirklich weg
 - Auth-Tests sind PFLICHT bei jeder Auth-Änderung
 - Max 2 Tester→Builder Loops, dann Eskalation an User
+- Namenskonvention: `.test.ts` = Vitest (Unit/API), `.spec.ts` = Playwright (E2E) – NIEMALS mischen
+- Supabase-Client IMMER mocken in Unit Tests, NIE in RLS-Tests
+- ❌ NIEMALS Service Role Key in Tests (umgeht RLS)
+- ❌ NIEMALS `querySelector` – immer `getByRole` / `getByLabelText` / `getByText` / `getByTestId`
+- Kein `any` in Test-Code
+
+---
+
+## File Protection Zones
+
+Geschützte Dateien dürfen NUR vom User manuell geändert werden. Schutzmechanismus: PreToolUse Hook (`protect-files.sh`) + deny-Rules in settings.json + diese Instruktionen.
+
+**Protected (nur User darf ändern):**
+- `CLAUDE.md` – Projekt-Verfassung
+- `.claude/commands/*`, `.claude/skills/*`, `.claude/agents/*` – Agent-Definitionen
+- `.claude/settings.json`, `.claude/hooks/*` – Permissions & Hooks
+- `.env`, `.env.local`, `.env.test`, `.env.production` – Secrets
+- `playwright.config.ts`, `vitest.config.ts`, `global-setup.ts`, `global-teardown.ts` – Test-Infrastruktur
+
+Bei Änderungsbedarf → STOP, dem User beschreiben WAS und WARUM, User ändert selbst.
+
+**Open (normaler Arbeitsbereich):**
+- `src/**` – Builder Hauptarbeitsbereich
+- `tests/**` – Tester Hauptarbeitsbereich
+- `docs/**` – Alle Agents
+- `migrations/**` – Database Agent
 
 ---
 
@@ -262,4 +315,4 @@ Relevante Notion-Seiten (Referenz):
 
 ---
 
-*CLAUDE.md v1.0 | SUPERMATT App Suite | Stand: 2026-02-09*
+*CLAUDE.md v1.2 | SUPERMATT App Suite | Stand: 2026-02-13*

@@ -1,5 +1,5 @@
 #!/bin/bash
-# BMAD Lite v3.0 – Install Script
+# BMAD Lite v3.2 – Install Script
 # Installiert das Claude Code Agent Framework in ein bestehendes Projekt
 
 set -e
@@ -15,7 +15,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 echo ""
-echo "🤖 BMAD Lite v3.0 – Agent Framework Installer"
+echo "🤖 BMAD Lite v3.2 – Agent Framework Installer"
 echo "================================================"
 echo ""
 
@@ -69,10 +69,16 @@ git clone --quiet "$REPO_URL" "$TMP_DIR" 2>/dev/null || {
   exit 1
 }
 
-# 4. Installiere Agents
+# 4. Installiere Agents + Hooks
 if [ "$INSTALL_AGENTS" = true ]; then
   cp -r "$TMP_DIR/.claude/" .
   echo -e "${GREEN}✅ .claude/ Agents installiert${NC}"
+
+  # Hook ausführbar machen
+  if [ -f ".claude/hooks/protect-files.sh" ]; then
+    chmod +x .claude/hooks/protect-files.sh
+    echo -e "${GREEN}✅ File Protection Hook aktiviert${NC}"
+  fi
 fi
 
 # 5. Templates installieren (ohne Überschreiben)
@@ -98,20 +104,56 @@ install_template "$TMP_DIR/templates/CONTINUITY.md" "./CONTINUITY.md" "CONTINUIT
 
 # docs/backlog Template
 mkdir -p docs/backlog
-install_template "$TMP_DIR/templates/docs/backlog/_TEMPLATE.md" "./docs/backlog/_TEMPLATE.md" "Backlog Template"
+install_template "$TMP_DIR/templates/backlog/_template.md" "./docs/backlog/_template.md" "Backlog Template"
 
 # docs Verzeichnisse
 mkdir -p docs/architecture
 mkdir -p docs/decisions
 echo -e "${GREEN}✅ docs/ Verzeichnisse erstellt${NC}"
 
-# 6. Cleanup
+# 6. Testing Templates installieren
+echo ""
+echo "🧪 Testing Templates installieren..."
+
+# E2E (Playwright)
+mkdir -p templates/testing/e2e
+for f in playwright.config.ts auth.spec.ts _example.spec.ts global-setup.ts global-teardown.ts .env.test.example; do
+  install_template "$TMP_DIR/templates/testing/$f" "./templates/testing/$f" "Testing: $f"
+done
+
+# Vitest Konfiguration
+install_template "$TMP_DIR/templates/testing/vitest.config.ts" "./templates/testing/vitest.config.ts" "Testing: vitest.config.ts"
+install_template "$TMP_DIR/templates/testing/setup.ts" "./templates/testing/setup.ts" "Testing: setup.ts"
+
+# Unit Test Templates (Vitest)
+mkdir -p templates/testing/unit
+for f in _example.test.ts zustand-store.test.ts zod-schema.test.ts server-action.test.ts drizzle-query.test.ts util-function.test.ts react-component.test.tsx; do
+  install_template "$TMP_DIR/templates/testing/unit/$f" "./templates/testing/unit/$f" "Testing (Unit): $f"
+done
+
+# API Test Templates (Vitest)
+mkdir -p templates/testing/api
+for f in _example.api.test.ts api-route.test.ts rls-policy.test.ts server-action.api.test.ts middleware.test.ts; do
+  install_template "$TMP_DIR/templates/testing/api/$f" "./templates/testing/api/$f" "Testing (API): $f"
+done
+
+# 7. Cleanup
 rm -rf "$TMP_DIR"
 
-# 7. Zusammenfassung
+# 8. Zusammenfassung
 echo ""
 echo "================================================"
 echo -e "${GREEN}🎉 Installation abgeschlossen!${NC}"
+echo ""
+echo "Installiert:"
+echo "  ✅ 9 Agents (.claude/commands/)"
+echo "  ✅ File Protection Hook (.claude/hooks/)"
+echo "  ✅ Settings mit deny/ask/allow (.claude/settings.json)"
+echo "  ✅ Templates (CLAUDE.md, CONTINUITY.md, Backlog)"
+echo "  ✅ Testing Templates (Playwright E2E)"
+echo "  ✅ Testing Templates (Vitest Unit – 7 Templates)"
+echo "  ✅ Testing Templates (Vitest API – 5 Templates)"
+echo "  ✅ Vitest Konfiguration (vitest.config.ts + setup.ts)"
 echo ""
 echo "Nächste Schritte:"
 echo "  1. CLAUDE.md anpassen (Tech Stack, Domains, Conventions)"

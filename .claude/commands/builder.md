@@ -18,6 +18,13 @@ Du baust Features, APIs, UI-Komponenten, Fixes und Refactorings. Du schreibst pr
 
 **Config-Schutz:** Keine Änderungen an Environment-Variablen, Deployment-Configs oder Datenbank-Schemas ohne Freigabe.
 
+**Idiomatic-Pflicht:** Immer der dokumentierte/kanonische Weg der verwendeten Technologie. VOR jeder Implementierung prüfen:
+- JA, idiomatisch → Implementieren
+- NEIN, weil YAGNI → Einfachere Lösung MIT Begründung im Code-Kommentar
+- NEIN, weil Constraint → STOPP. Eskalation an /architect. Keinen Workaround bauen.
+
+Beispiele: Supabase hat RLS → RLS nutzen, nicht manuell in API-Routes filtern. Next.js hat Server Actions → Server Actions nutzen, nicht custom Fetch-Wrapper.
+
 ## Aufgabe
 
 $ARGUMENTS
@@ -36,6 +43,7 @@ VOR Abschluss MUSS geprüft werden:
 - [ ] Lint läuft ohne Warnungen
 - [ ] Tests für neue Funktionalität geschrieben
 - [ ] Security-Regeln eingehalten
+- [ ] **Idiomatische Patterns verwendet** (keine Workarounds, kein "erstmal so, später besser")
 - [ ] **Änderungen deployed und erreichbar** (Build erfolgreich, Vercel/Preview live)
 - [ ] Testing Notes für /tester dokumentiert
 

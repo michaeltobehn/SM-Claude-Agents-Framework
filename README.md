@@ -33,7 +33,8 @@ Optimiert für Nicht-Programmierer die mit KI-gestützter Entwicklung arbeiten.
 | [QUICK-START.md](docs/QUICK-START.md) | Installation und Erste Schritte |
 | [AGENT-WORKFLOW.md](docs/AGENT-WORKFLOW.md) | Handoff-Protokoll und Rollentrennung |
 | [DEPLOYMENT-STRATEGY.md](docs/DEPLOYMENT-STRATEGY.md) | Wann und wie deployen |
-| [CHANGELOG-v3.md](CHANGELOG-v3.md) | Alle Änderungen in v3.0 |
+| [FILE-PROTECTION.md](docs/FILE-PROTECTION.md) | Defense in Depth – Dateischutz |
+| [CHANGELOG-v3.md](CHANGELOG-v3.md) | Alle Änderungen v3.0 → v3.1 |
 
 ## Quick Install
 
@@ -76,12 +77,22 @@ your-project/
 │   │   ├── tester.md       # /tester Command
 │   │   ├── reviewer.md     # /reviewer Command
 │   │   └── status.md       # /status Command
-│   └── settings.json       # Claude Code Einstellungen
+│   ├── hooks/
+│   │   └── protect-files.sh # File Protection Hook (PreToolUse)
+│   └── settings.json       # Permissions (deny/ask/allow) + Hook-Registrierung
 ├── docs/
 │   ├── CONTINUITY.md       # Ledger für Session-State
 │   └── backlog/            # User Stories
 │       ├── README.md       # Sprint-Übersicht
 │       └── _template.md    # Story-Template
+├── templates/
+│   └── testing/            # Playwright E2E Templates
+│       ├── playwright.config.ts
+│       ├── auth.spec.ts
+│       ├── _example.spec.ts
+│       ├── global-setup.ts
+│       ├── global-teardown.ts
+│       └── .env.test.example
 └── CLAUDE.md               # Projekt-Anweisungen (ANPASSEN!)
 ```
 
@@ -145,6 +156,19 @@ Der Builder hat spezielle Schutzmaßnahmen:
 - **Spec-Pflicht:** Neues Feature ohne Spec → Fragt nach
 - **Datei-Limit:** Mehr als 3 Dateien → Beschreibt erst den Plan
 - **Dependency-Schutz:** Keine neuen Dependencies ohne Freigabe
+- **Idiomatic-Pflicht:** Immer der kanonische Weg der Technologie
+
+### File Protection (Defense in Depth)
+
+Framework-Dateien sind vor Agent-Zugriff geschützt – 3 Schichten:
+
+| Schicht | Mechanismus | Zuverlässigkeit |
+|---------|------------|-----------------|
+| 1. Hook | `PreToolUse` Shell-Script | Deterministisch |
+| 2. CLAUDE.md | Prompt-Level Instruktionen | Soft |
+| 3. settings.json | `deny` Rules | Zusätzliche Schicht |
+
+Details: [FILE-PROTECTION.md](docs/FILE-PROTECTION.md)
 
 ### CONTINUITY.md
 
@@ -176,4 +200,4 @@ MIT
 
 ---
 
-BMAD Lite v3.0 | Stand: 9. Februar 2026
+BMAD Lite v3.1 | Stand: 13. Februar 2026
