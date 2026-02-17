@@ -9,11 +9,11 @@
 
 | Key | Value |
 |-----|-------|
-| **App** | [AUTH / TRAX / FRIDAY / SUBZ / SUITE-WIDE] |
+| **App** | [PROJEKTNAME / APP-NAME] |
 | **Phase** | [z.B. Phase 1 – MVP] |
 | **Sprint/Milestone** | [z.B. Auth-System implementieren] |
 | **Last Updated** | [YYYY-MM-DD HH:MM] |
-| **Last Agent** | [/product, /planner, /architect, /ux, /database, /builder, /tester, /reviewer, /status] |
+| **Last Agent** | [/setup, /product, /planner, /architect, /ux, /database, /builder, /tester, /reviewer, /status] |
 
 ---
 
@@ -106,4 +106,4 @@ Aktive Specs in `docs/backlog/`:
 
 ---
 
-*CONTINUITY.md Template v1.0 | BMAD Lite v3.0*
+*CONTINUITY.md Template v1.1 | BMAD Lite v3.3*

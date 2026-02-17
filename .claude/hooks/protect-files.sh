@@ -55,6 +55,12 @@ PROTECTED_PATTERNS=(
   "global-teardown.ts"
 )
 
+# --- Setup-Mode Ausnahme ---
+# Wenn der /setup Agent aktiv ist (Marker-Datei existiert),
+# darf CLAUDE.md und CONTINUITY.md geschrieben werden.
+SETUP_MARKER=".claude/.setup-active"
+SETUP_ALLOWED_PATTERNS=("CLAUDE.md" "CONTINUITY.md")
+
 # --- Hook Logic (nicht ändern) ---
 
 # Claude Code sendet Tool-Input als JSON via stdin
@@ -89,6 +95,22 @@ fi
 IFS='|||' read -ra PATHS <<< "$FILE_PATH"
 
 for path in "${PATHS[@]}"; do
+  # --- Setup-Mode Check ---
+  if [ -f "$SETUP_MARKER" ]; then
+    is_setup_allowed=false
+    for setup_pattern in "${SETUP_ALLOWED_PATTERNS[@]}"; do
+      if [[ "$path" == *"$setup_pattern"* ]]; then
+        is_setup_allowed=true
+        break
+      fi
+    done
+    if [ "$is_setup_allowed" = true ]; then
+      # Setup-Mode: Diese Datei ist erlaubt, weiter zum nächsten Pfad
+      continue
+    fi
+  fi
+
+  # --- Standard Protection Check ---
   for pattern in "${PROTECTED_PATTERNS[@]}"; do
     if [[ "$path" == *"$pattern"* ]]; then
       echo "🔴 BLOCKED: '$path' ist eine geschützte Framework-Datei." >&2

@@ -1,36 +1,41 @@
-# Templates – BMAD Lite v3.0
+# Templates – BMAD Lite v3.3
 
 Diese Templates werden bei der Installation in das Projekt-Root kopiert.
-Der User passt sie dann an sein Projekt an.
+Der `/setup` Agent füllt sie dann projektspezifisch aus.
 
 ## Dateien
 
 | Template | Ziel | Beschreibung |
 |----------|------|-------------|
-| `CLAUDE.md` | `./CLAUDE.md` | Projekt-Konfiguration – Tech Stack, Conventions, Security Rules. Wird von jedem Agent beim Start gelesen. **MUSS angepasst werden.** |
+| `CLAUDE.md` | `./CLAUDE.md` | Generische Projekt-Konfiguration mit Platzhaltern. Wird vom `/setup` Agent mit Tech Stack, Conventions und Security Rules gefüllt. |
 | `CONTINUITY.md` | `./CONTINUITY.md` | Projektstand-Tracking. Wird von jedem Agent gelesen UND aktualisiert. Festes Schema – nicht verändern. |
-| `docs/backlog/_TEMPLATE.md` | `./docs/backlog/_TEMPLATE.md` | Vorlage für User Stories. /planner kopiert dieses Template für jede neue Story. |
-| `install.sh` | – | Installations-Script mit Backup-Option und Merge-Logik. |
+| `backlog/_template.md` | `./docs/backlog/_template.md` | Vorlage für User Stories. /planner kopiert dieses Template für jede neue Story. |
+| `presets/` | – | Vorkonfigurierte CLAUDE.md Varianten für bekannte Projekt-Setups. |
 
-## Anpassung CLAUDE.md
+## Setup-Workflow (empfohlen)
 
-Nach der Installation MUSS der User folgende Abschnitte anpassen:
+1. `install.sh` ausführen → Framework wird installiert
+2. `/setup [Projekt-Spec]` in Claude Code → CLAUDE.md wird generiert
+3. `/status` → Prüft ob alles korrekt eingerichtet ist
 
-1. **Projekt** – Name, Owner, Repo-URL
-2. **Tech Stack** – Falls abweichend vom SUPERMATT-Default
-3. **Monorepo-Struktur** – An tatsächliche Struktur anpassen
-4. **Datenbank-Konventionen** – Tabellen-Prefixes, Naming
-5. **Domains & Deployment** – Richtige URLs und Vercel-Projekte
-6. **Environment Variables** – Projekt-spezifische Vars
+## Alternatives Setup
+
+### Preset verwenden
+1. Preset aus `presets/` nach `./CLAUDE.md` kopieren
+2. Projektspezifische Werte anpassen (Name, Domains, etc.)
+
+### Manuell
+1. `templates/CLAUDE.md` als Basis nehmen
+2. Alle `[PLATZHALTER]` manuell ersetzen
 
 ## Schema-Regeln CONTINUITY.md
 
 Das Format ist FEST. Agents dürfen:
-- ✅ Werte in bestehenden Feldern ändern
-- ✅ Zeilen in Tabellen hinzufügen
-- ❌ Abschnitte hinzufügen oder entfernen
-- ❌ Überschriften umbenennen
-- ❌ Struktur verändern
+- Werte in bestehenden Feldern ändern
+- Zeilen in Tabellen hinzufügen
+- Abschnitte NICHT hinzufügen oder entfernen
+- Überschriften NICHT umbenennen
+- Struktur NICHT verändern
 
 Dies stellt sicher, dass jeder Agent die gleiche Struktur vorfindet,
 unabhängig davon welcher Agent zuletzt geschrieben hat.

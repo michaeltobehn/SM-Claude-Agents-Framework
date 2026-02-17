@@ -1,7 +1,6 @@
 {
   "permissions": {
     "deny": [
-      "Edit(CLAUDE.md)",
       "Edit(.claude/**)",
       "Edit(.env)",
       "Edit(.env.*)",
@@ -14,7 +13,9 @@
       "Bash(git push:*)",
       "Bash(npm install:*)",
       "Bash(pnpm add:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Edit(CLAUDE.md)",
+      "Write(CLAUDE.md)"
     ],
     "allow": [
       "Bash(npm run:*)",
@@ -38,14 +39,17 @@
       "Bash(mkdir:*)"
     ]
   },
-
   "hooks": {
-    "PreToolUse": [{
-      "matcher": "Edit|Write|MultiEdit",
-      "hooks": [{
-        "type": "command",
-        "command": ".claude/hooks/protect-files.sh"
-      }]
-    }]
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/protect-files.sh"
+          }
+        ]
+      }
+    ]
   }
 }

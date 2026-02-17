@@ -1,5 +1,5 @@
 #!/bin/bash
-# BMAD Lite v3.2 – Install Script
+# BMAD Lite v3.3 – Install Script
 # Installiert das Claude Code Agent Framework in ein bestehendes Projekt
 
 set -e
@@ -15,7 +15,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 echo ""
-echo "🤖 BMAD Lite v3.2 – Agent Framework Installer"
+echo "🤖 BMAD Lite v3.3 – Agent Framework Installer"
 echo "================================================"
 echo ""
 
@@ -146,22 +146,23 @@ echo "================================================"
 echo -e "${GREEN}🎉 Installation abgeschlossen!${NC}"
 echo ""
 echo "Installiert:"
-echo "  ✅ 9 Agents (.claude/commands/)"
+echo "  ✅ 10 Agents (.claude/commands/)"
 echo "  ✅ File Protection Hook (.claude/hooks/)"
 echo "  ✅ Settings mit deny/ask/allow (.claude/settings.json)"
-echo "  ✅ Templates (CLAUDE.md, CONTINUITY.md, Backlog)"
+echo "  ✅ Templates (CLAUDE.md Template, CONTINUITY.md, Backlog)"
+echo "  ✅ Presets (templates/presets/)"
 echo "  ✅ Testing Templates (Playwright E2E)"
 echo "  ✅ Testing Templates (Vitest Unit – 7 Templates)"
 echo "  ✅ Testing Templates (Vitest API – 5 Templates)"
 echo "  ✅ Vitest Konfiguration (vitest.config.ts + setup.ts)"
 echo ""
 echo "Nächste Schritte:"
-echo "  1. CLAUDE.md anpassen (Tech Stack, Domains, Conventions)"
-echo "  2. CONTINUITY.md initialisieren (aktuelle Phase eintragen)"
-echo "  3. In Claude Code (VSCode): /status eingeben"
+echo "  1. In Claude Code (VSCode): /setup [Projekt-Spec einfügen]"
+echo "     (Oder: /setup und dann Spec per Copy-Paste eingeben)"
+echo "  2. /status eingeben um Setup zu prüfen"
 echo ""
 echo "Agents verfügbar:"
-echo "  /product /planner /architect /ux /database /builder /tester /reviewer /status"
+echo "  /setup /product /planner /architect /ux /database /builder /tester /reviewer /status"
 echo ""
 echo "Docs: https://github.com/michaeltobehn/SM-Claude-Agents-Framework"
 echo "================================================"
