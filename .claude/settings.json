@@ -1,5 +1,51 @@
 {
   "permissions": {
-    "allow": []
+    "deny": [
+      "Edit(CLAUDE.md)",
+      "Edit(.claude/**)",
+      "Edit(.env)",
+      "Edit(.env.*)",
+      "Edit(playwright.config.ts)",
+      "Edit(vitest.config.ts)",
+      "Edit(global-setup.ts)",
+      "Edit(global-teardown.ts)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(npm install:*)",
+      "Bash(pnpm add:*)",
+      "Bash(rm:*)"
+    ],
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(pnpm run:*)",
+      "Bash(npx playwright:*)",
+      "Bash(pnpm vitest:*)",
+      "Bash(npx vitest:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)"
+    ]
+  },
+
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Edit|Write|MultiEdit",
+      "hooks": [{
+        "type": "command",
+        "command": ".claude/hooks/protect-files.sh"
+      }]
+    }]
   }
 }

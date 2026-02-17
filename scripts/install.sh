@@ -1,96 +1,167 @@
 #!/bin/bash
-
-# Claude Agent Framework - Installer
-# Usage: ./install.sh [target-directory]
+# BMAD Lite v3.2 – Install Script
+# Installiert das Claude Code Agent Framework in ein bestehendes Projekt
 
 set -e
 
-# Colors
+REPO_URL="https://github.com/michaeltobehn/SM-Claude-Agents-Framework.git"
+TMP_DIR="/tmp/sm-caf-$$"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Farben
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# Determine script directory (where the framework is)
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-
-# Target directory (current dir or provided argument)
-TARGET_DIR="${1:-.}"
-TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
-
-echo -e "${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${GREEN}║       Claude Agent Framework (BMAD Lite) Installer         ║${NC}"
-echo -e "${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
 echo ""
-echo -e "Framework: ${YELLOW}$SCRIPT_DIR${NC}"
-echo -e "Target:    ${YELLOW}$TARGET_DIR${NC}"
+echo "🤖 BMAD Lite v3.2 – Agent Framework Installer"
+echo "================================================"
 echo ""
 
-# Check if target is a git repo
-if [ ! -d "$TARGET_DIR/.git" ]; then
-    echo -e "${YELLOW}⚠️  Warning: Target is not a git repository${NC}"
+# 1. Prüfe ob wir in einem Projekt-Root sind
+if [ ! -f "package.json" ] && [ ! -f "turbo.json" ]; then
+  echo -e "${YELLOW}⚠️  Kein package.json oder turbo.json gefunden.${NC}"
+  read -p "Trotzdem fortfahren? (y/N) " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Abgebrochen."
+    exit 1
+  fi
 fi
 
-# Check if .claude already exists
-if [ -d "$TARGET_DIR/.claude" ]; then
-    echo -e "${YELLOW}⚠️  .claude/ directory already exists${NC}"
-    read -p "Overwrite? (y/N) " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        echo -e "${RED}Aborted.${NC}"
-        exit 1
-    fi
-fi
-
-# Create directories
-echo -e "${GREEN}Creating directories...${NC}"
-mkdir -p "$TARGET_DIR/.claude/commands"
-mkdir -p "$TARGET_DIR/docs"
-
-# Copy .claude/commands
-echo -e "${GREEN}Installing agent commands...${NC}"
-cp -r "$SCRIPT_DIR/.claude/commands/"* "$TARGET_DIR/.claude/commands/"
-
-# Copy settings.json if not exists
-if [ ! -f "$TARGET_DIR/.claude/settings.json" ]; then
-    cp "$SCRIPT_DIR/.claude/settings.json" "$TARGET_DIR/.claude/settings.json"
-    echo -e "  ${GREEN}✓${NC} .claude/settings.json"
+# 2. Prüfe ob .claude/ bereits existiert
+if [ -d ".claude" ]; then
+  echo -e "${YELLOW}⚠️  .claude/ Verzeichnis existiert bereits!${NC}"
+  echo ""
+  echo "Optionen:"
+  echo "  [b] Backup erstellen (.claude.backup-TIMESTAMP) und überschreiben"
+  echo "  [s] Überspringen (nur fehlende Templates installieren)"
+  echo "  [a] Abbrechen"
+  echo ""
+  read -p "Wahl (b/s/a): " -n 1 -r
+  echo
+  case $REPLY in
+    b|B)
+      BACKUP=".claude.backup-$(date +%Y%m%d-%H%M%S)"
+      cp -r .claude "$BACKUP"
+      echo -e "${GREEN}✅ Backup erstellt: $BACKUP${NC}"
+      INSTALL_AGENTS=true
+      ;;
+    s|S)
+      echo "Agents werden übersprungen."
+      INSTALL_AGENTS=false
+      ;;
+    *)
+      echo "Abgebrochen."
+      exit 0
+      ;;
+  esac
 else
-    echo -e "  ${YELLOW}⏭${NC} .claude/settings.json (exists, skipped)"
+  INSTALL_AGENTS=true
 fi
 
-# Copy CONTINUITY.md template if not exists
-if [ ! -f "$TARGET_DIR/docs/CONTINUITY.md" ]; then
-    cp "$SCRIPT_DIR/templates/CONTINUITY.md" "$TARGET_DIR/docs/CONTINUITY.md"
-    echo -e "  ${GREEN}✓${NC} docs/CONTINUITY.md"
-else
-    echo -e "  ${YELLOW}⏭${NC} docs/CONTINUITY.md (exists, skipped)"
-fi
-
-# Copy CLAUDE.md template if not exists
-if [ ! -f "$TARGET_DIR/CLAUDE.md" ]; then
-    cp "$SCRIPT_DIR/templates/CLAUDE.md" "$TARGET_DIR/CLAUDE.md"
-    echo -e "  ${GREEN}✓${NC} CLAUDE.md"
-else
-    echo -e "  ${YELLOW}⏭${NC} CLAUDE.md (exists, skipped)"
-fi
-
-# List installed commands
+# 3. Clone Repo
 echo ""
-echo -e "${GREEN}Installed agent commands:${NC}"
-for cmd in "$TARGET_DIR/.claude/commands/"*.md; do
-    name=$(basename "$cmd" .md)
-    echo -e "  ${GREEN}✓${NC} /$name"
+echo "📥 Lade Framework..."
+git clone --quiet "$REPO_URL" "$TMP_DIR" 2>/dev/null || {
+  echo -e "${RED}❌ Git Clone fehlgeschlagen. Prüfe die URL und deine Verbindung.${NC}"
+  exit 1
+}
+
+# 4. Installiere Agents + Hooks
+if [ "$INSTALL_AGENTS" = true ]; then
+  cp -r "$TMP_DIR/.claude/" .
+  echo -e "${GREEN}✅ .claude/ Agents installiert${NC}"
+
+  # Hook ausführbar machen
+  if [ -f ".claude/hooks/protect-files.sh" ]; then
+    chmod +x .claude/hooks/protect-files.sh
+    echo -e "${GREEN}✅ File Protection Hook aktiviert${NC}"
+  fi
+fi
+
+# 5. Templates installieren (ohne Überschreiben)
+install_template() {
+  local src="$1"
+  local dest="$2"
+  local name="$3"
+
+  if [ -f "$dest" ]; then
+    echo -e "${YELLOW}⏭️  $name existiert bereits – übersprungen${NC}"
+  else
+    mkdir -p "$(dirname "$dest")"
+    cp "$src" "$dest"
+    echo -e "${GREEN}✅ $name installiert${NC}"
+  fi
+}
+
+echo ""
+echo "📋 Templates installieren..."
+
+install_template "$TMP_DIR/templates/CLAUDE.md" "./CLAUDE.md" "CLAUDE.md"
+install_template "$TMP_DIR/templates/CONTINUITY.md" "./CONTINUITY.md" "CONTINUITY.md"
+
+# docs/backlog Template
+mkdir -p docs/backlog
+install_template "$TMP_DIR/templates/backlog/_template.md" "./docs/backlog/_template.md" "Backlog Template"
+
+# docs Verzeichnisse
+mkdir -p docs/architecture
+mkdir -p docs/decisions
+echo -e "${GREEN}✅ docs/ Verzeichnisse erstellt${NC}"
+
+# 6. Testing Templates installieren
+echo ""
+echo "🧪 Testing Templates installieren..."
+
+# E2E (Playwright)
+mkdir -p templates/testing/e2e
+for f in playwright.config.ts auth.spec.ts _example.spec.ts global-setup.ts global-teardown.ts .env.test.example; do
+  install_template "$TMP_DIR/templates/testing/$f" "./templates/testing/$f" "Testing: $f"
 done
 
+# Vitest Konfiguration
+install_template "$TMP_DIR/templates/testing/vitest.config.ts" "./templates/testing/vitest.config.ts" "Testing: vitest.config.ts"
+install_template "$TMP_DIR/templates/testing/setup.ts" "./templates/testing/setup.ts" "Testing: setup.ts"
+
+# Unit Test Templates (Vitest)
+mkdir -p templates/testing/unit
+for f in _example.test.ts zustand-store.test.ts zod-schema.test.ts server-action.test.ts drizzle-query.test.ts util-function.test.ts react-component.test.tsx; do
+  install_template "$TMP_DIR/templates/testing/unit/$f" "./templates/testing/unit/$f" "Testing (Unit): $f"
+done
+
+# API Test Templates (Vitest)
+mkdir -p templates/testing/api
+for f in _example.api.test.ts api-route.test.ts rls-policy.test.ts server-action.api.test.ts middleware.test.ts; do
+  install_template "$TMP_DIR/templates/testing/api/$f" "./templates/testing/api/$f" "Testing (API): $f"
+done
+
+# 7. Cleanup
+rm -rf "$TMP_DIR"
+
+# 8. Zusammenfassung
 echo ""
-echo -e "${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${GREEN}║                    Installation complete!                   ║${NC}"
-echo -e "${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
+echo "================================================"
+echo -e "${GREEN}🎉 Installation abgeschlossen!${NC}"
 echo ""
-echo -e "Next steps:"
-echo -e "  1. Edit ${YELLOW}CLAUDE.md${NC} with your project-specific config"
-echo -e "  2. Edit ${YELLOW}docs/CONTINUITY.md${NC} - replace [PROJEKT-NAME]"
-echo -e "  3. Start with ${YELLOW}/status${NC} or ${YELLOW}/planner${NC}"
+echo "Installiert:"
+echo "  ✅ 9 Agents (.claude/commands/)"
+echo "  ✅ File Protection Hook (.claude/hooks/)"
+echo "  ✅ Settings mit deny/ask/allow (.claude/settings.json)"
+echo "  ✅ Templates (CLAUDE.md, CONTINUITY.md, Backlog)"
+echo "  ✅ Testing Templates (Playwright E2E)"
+echo "  ✅ Testing Templates (Vitest Unit – 7 Templates)"
+echo "  ✅ Testing Templates (Vitest API – 5 Templates)"
+echo "  ✅ Vitest Konfiguration (vitest.config.ts + setup.ts)"
 echo ""
-echo -e "Workflow: ${YELLOW}/planner → /architect → /database → /builder → /tester → /reviewer${NC}"
+echo "Nächste Schritte:"
+echo "  1. CLAUDE.md anpassen (Tech Stack, Domains, Conventions)"
+echo "  2. CONTINUITY.md initialisieren (aktuelle Phase eintragen)"
+echo "  3. In Claude Code (VSCode): /status eingeben"
+echo ""
+echo "Agents verfügbar:"
+echo "  /product /planner /architect /ux /database /builder /tester /reviewer /status"
+echo ""
+echo "Docs: https://github.com/michaeltobehn/SM-Claude-Agents-Framework"
+echo "================================================"

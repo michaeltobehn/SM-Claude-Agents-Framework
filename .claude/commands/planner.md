@@ -42,22 +42,15 @@ Jetzt erst schreibst du das strukturierte Ergebnis.
 
 ## Erwartetes Ergebnis
 
-```yaml
-feature:
-  name: "Feature Name"
-  priority: "high|medium|low"
+Schreibe das Ergebnis nach `docs/backlog/[feature-name].md`:
 
-user_story:
-  role: "Als [Rolle]"
-  want: "möchte ich [Funktion]"
-  benefit: "damit [Nutzen]"
+- Feature-Name und Priorität
+- User Story (Als... möchte ich... damit...)
+- Acceptance Criteria im Given/When/Then Format mit Verification-Typ (manual | e2e | unit)
+- Task-Liste mit Agent-Zuordnung und Reihenfolge
+- Offene Fragen (falls vorhanden)
 
-acceptance_criteria:
-  - id: "AC-001"
-    given: "Kontext/Vorbedingung"
-    when: "Aktion des Users"
-    then: "Erwartetes Ergebnis"
-    verification: "e2e|unit|manual"
+## Einschränkungen
 
 tasks:
   - agent: "/architect"
