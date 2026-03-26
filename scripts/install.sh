@@ -31,29 +31,23 @@ is_project_root() {
 }
 
 if ! is_project_root; then
-  echo -e "${YELLOW}⚠️  Kein Projekt-Root erkannt (kein package.json, .git, pyproject.toml etc.)${NC}"
-  echo -e "${YELLOW}   Aktuelles Verzeichnis: $(pwd)${NC}"
-  echo ""
-  # Bei curl|bash ist stdin nicht verfügbar – automatisch abbrechen mit Hinweis
-  if [ ! -t 0 ]; then
-    echo -e "   ${YELLOW}So geht's:${NC}"
-    echo -e "     1. Wechsle ins Projekt-Verzeichnis:  ${GREEN}cd /pfad/zu/deinem/projekt${NC}"
-    echo -e "     2. Führe den Installer erneut aus:"
-    echo -e "        ${GREEN}curl -sSL https://raw.githubusercontent.com/michaeltobehn/SM-Claude-Agents-Framework/main/scripts/install.sh | bash${NC}"
+  # Prüfe ob wir im Home-Verzeichnis sind (dort sollte man nicht installieren)
+  if [ "$(pwd)" = "$HOME" ]; then
+    echo -e "${RED}❌ Installation im Home-Verzeichnis (~) ist nicht empfohlen.${NC}"
     echo ""
-    echo -e "   ${YELLOW}Oder erstelle ein neues Projekt:${NC}"
-    echo -e "     ${GREEN}mkdir mein-projekt && cd mein-projekt && git init${NC}"
+    echo -e "   ${YELLOW}So geht's:${NC}"
+    echo -e "     ${GREEN}mkdir mein-projekt && cd mein-projekt${NC}"
     echo -e "     Dann den Installer erneut ausführen."
     echo ""
     echo "Abgebrochen."
     exit 1
   fi
-  read -p "Trotzdem fortfahren? (y/N) " -n 1 -r
-  echo
-  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    echo "Abgebrochen."
-    exit 1
-  fi
+
+  # Leeres Projekt-Verzeichnis → automatisch git init
+  echo -e "${YELLOW}⚠️  Kein Projekt-Root erkannt – initialisiere Git Repository...${NC}"
+  git init --quiet
+  echo -e "${GREEN}✅ Git Repository initialisiert in: $(pwd)${NC}"
+  echo ""
 fi
 
 # 2. Prüfe ob .claude/ bereits existiert
