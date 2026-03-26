@@ -73,11 +73,11 @@ workarounds:
 
 ## Deployment-Verantwortung
 
-| Wer | Wann | Was |
-|-----|------|-----|
-| BUILDER | Nach Implementierung | Prüft ob Deploy möglich (Limit) |
-| ORCHESTRATOR | Nach Review | Entscheidet über Deploy-Zeitpunkt |
-| User | Bei Blocker | Entscheidet über Hosting Upgrade |
+| Wer | Command | Wann | Was |
+|-----|---------|------|-----|
+| BUILDER | `/builder` | Nach Implementierung | Prüft ob Deploy möglich (Limit) |
+| REVIEWER | `/reviewer` | Nach Review | Gibt Freigabe für Deploy |
+| User | – | Bei Blocker | Entscheidet über Hosting Upgrade |
 
 ---
 
@@ -129,4 +129,4 @@ supabase migration list --linked  # Local = Remote?
 4. Vercel Auto-Deploy abwarten
 5. DANN erst an TESTER handoff
 
-*Dokumentversion: 1.0 | Stand: Februar 2026*
+*Dokumentversion: 1.1 | Stand: März 2026*

@@ -55,15 +55,18 @@
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-| Agent | DARF | DARF NICHT |
-|-------|------|------------|
-| **PLANNER** | User Stories schreiben, AC definieren | Code schreiben, Tests schreiben |
-| **ARCHITECT** | Design dokumentieren, Struktur planen | Code implementieren, Tests schreiben |
-| **UX** | UI Specs, Components, Accessibility | Backend-Code, DB-Migrations |
-| **DATABASE** | Migrations schreiben, RLS Policies | UI-Code, API-Handler, Tests |
-| **BUILDER** | Feature-Code, API-Handler, UI-Komponenten | E2E Tests schreiben, Security-Audits |
-| **TESTER** | E2E Tests schreiben, AC verifizieren | Feature-Code fixen, Security-Audits |
-| **REVIEWER** | Code reviewen, Security-Findings dokumentieren | Code ändern, Tests schreiben |
+| Agent | Command | DARF | DARF NICHT |
+|-------|---------|------|------------|
+| **PRODUCT** | `/product` | Ideen bewerten, Strategie, Feature-Priorisierung | Code schreiben, Design-Entscheidungen |
+| **PLANNER** | `/planner` | User Stories schreiben, AC definieren | Code schreiben, Tests schreiben |
+| **ARCHITECT** | `/architect` | Design dokumentieren, Struktur planen | Code implementieren, Tests schreiben |
+| **UX** | `/ux` | UI Specs, Components, Accessibility | Backend-Code, DB-Migrations |
+| **DATABASE** | `/database` | Migrations schreiben, RLS Policies | UI-Code, API-Handler, Tests |
+| **BUILDER** | `/builder` | Feature-Code, API-Handler, UI-Komponenten | E2E Tests schreiben, Security-Audits |
+| **TESTER** | `/tester` | E2E/Unit/API Tests schreiben, AC verifizieren | Feature-Code fixen, Security-Audits |
+| **REVIEWER** | `/reviewer` | Code reviewen, Security-Findings dokumentieren | Code ändern, Tests schreiben |
+| **STATUS** | `/status` | Projekt-Übersicht, nächsten Schritt empfehlen | Code ändern, Entscheidungen treffen |
+| **SETUP** | `/setup` | Projekt konfigurieren, CLAUDE.md initialisieren | Feature-Code schreiben |
 
 ### Warum Rollentrennung?
 
@@ -223,7 +226,7 @@ Agent kann nicht fortfahren → Status: blocked
 ### Neue Features (voller Workflow)
 
 ```
-/planner → /architect → /ux → /database → /builder → /tester → /reviewer
+/product → /planner → /architect → /ux → /database → /builder → /tester → /reviewer
 ```
 
-*Dokumentversion: 1.1 | Stand: Februar 2026*
+*Dokumentversion: 1.2 | Stand: März 2026*
