@@ -5,14 +5,17 @@
 ### Option 1: Automatisch (empfohlen)
 
 ```bash
-# In dein Projekt-Verzeichnis wechseln
-cd /path/to/your/project
+# Projekt-Verzeichnis erstellen oder wechseln
+mkdir mein-projekt && cd mein-projekt
+
+# Git initialisieren (falls noch kein Repo)
+git init
 
 # Framework installieren
 curl -sSL https://raw.githubusercontent.com/michaeltobehn/SM-Claude-Agents-Framework/main/scripts/install.sh | bash
 ```
 
-> **Wichtig:** Du musst dich im Projekt-Root befinden (dort wo `.git/`, `package.json` o.ä. liegt).
+> **Wichtig:** Der Installer erkennt Projekt-Root-Verzeichnisse anhand von `.git/`, `package.json`, `pyproject.toml` etc. Bei einem neuen, leeren Verzeichnis reicht ein `git init` vorher.
 
 ### Option 2: Manuell
 

@@ -12,7 +12,7 @@ Optimiert für Nicht-Programmierer die mit KI-gestützter Entwicklung arbeiten.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    9 Spezialisierte Agents                   │
+│                   10 Spezialisierte Agents                   │
 ├─────────────────────────────────────────────────────────────┤
 │ /product   → Ideen, Strategie, Feature-Bewertung            │
 │ /planner   → User Stories, Acceptance Criteria              │
@@ -39,12 +39,19 @@ Optimiert für Nicht-Programmierer die mit KI-gestützter Entwicklung arbeiten.
 ## Quick Install
 
 ```bash
-# In dein Projekt-Verzeichnis wechseln
-cd /path/to/your/project
+# 1. Projekt-Verzeichnis erstellen oder wechseln
+mkdir mein-projekt && cd mein-projekt
 
-# Framework installieren
+# 2. Git initialisieren (falls noch kein Repo)
+git init
+
+# 3. Framework installieren
 curl -sSL https://raw.githubusercontent.com/michaeltobehn/SM-Claude-Agents-Framework/main/scripts/install.sh | bash
+```
 
+> **Wichtig:** Der Installer erkennt Projekt-Root-Verzeichnisse anhand von `.git/`, `package.json`, `pyproject.toml` etc. Bei einem neuen, leeren Verzeichnis reicht ein `git init` vorher.
+
+```bash
 # ODER manuell
 git clone https://github.com/michaeltobehn/SM-Claude-Agents-Framework.git /tmp/caf
 /tmp/caf/scripts/install.sh
