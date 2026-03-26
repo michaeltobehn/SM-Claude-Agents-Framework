@@ -14,6 +14,7 @@ Optimiert für Nicht-Programmierer die mit KI-gestützter Entwicklung arbeiten.
 ┌─────────────────────────────────────────────────────────────┐
 │                   10 Spezialisierte Agents                   │
 ├─────────────────────────────────────────────────────────────┤
+│ /setup     → Ersteinrichtung, Projekt konfigurieren          │
 │ /product   → Ideen, Strategie, Feature-Bewertung            │
 │ /planner   → User Stories, Acceptance Criteria              │
 │ /architect → Design, Datenmodelle, Spezifikationen          │
