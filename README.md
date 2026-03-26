@@ -76,6 +76,7 @@ cp SM-Claude-Agents-Framework/templates/CLAUDE.md your-project/
 your-project/
 ├── .claude/
 │   ├── commands/
+│   │   ├── setup.md        # /setup Command
 │   │   ├── product.md      # /product Command
 │   │   ├── planner.md      # /planner Command
 │   │   ├── architect.md    # /architect Command
@@ -94,14 +95,31 @@ your-project/
 │       ├── README.md       # Sprint-Übersicht
 │       └── _template.md    # Story-Template
 ├── templates/
-│   └── testing/            # Playwright E2E Templates
-│       ├── playwright.config.ts
-│       ├── auth.spec.ts
-│       ├── _example.spec.ts
-│       ├── global-setup.ts
-│       ├── global-teardown.ts
-│       └── .env.test.example
-└── CLAUDE.md               # Projekt-Anweisungen (ANPASSEN!)
+│   └── testing/
+│       ├── playwright.config.ts   # Playwright E2E Konfiguration
+│       ├── auth.spec.ts           # Auth-Test Vorlage
+│       ├── _example.spec.ts       # E2E Test Vorlage
+│       ├── global-setup.ts        # Playwright Setup
+│       ├── global-teardown.ts     # Playwright Teardown
+│       ├── .env.test.example      # Test-Umgebungsvariablen
+│       ├── vitest.config.ts       # Vitest Konfiguration
+│       ├── setup.ts               # Vitest Setup
+│       ├── unit/                   # 7 Unit-Test Templates (Vitest)
+│       │   ├── _example.test.ts
+│       │   ├── zustand-store.test.ts
+│       │   ├── zod-schema.test.ts
+│       │   ├── server-action.test.ts
+│       │   ├── drizzle-query.test.ts
+│       │   ├── util-function.test.ts
+│       │   └── react-component.test.tsx
+│       └── api/                    # 5 API-Test Templates (Vitest)
+│           ├── _example.api.test.ts
+│           ├── api-route.test.ts
+│           ├── rls-policy.test.ts
+│           ├── server-action.api.test.ts
+│           └── middleware.test.ts
+├── CONTINUITY.md               # Ledger für Session-State
+└── CLAUDE.md                   # Projekt-Anweisungen (ANPASSEN!)
 ```
 
 ## Workflow
@@ -112,6 +130,7 @@ your-project/
     └── "Ich hab eine Idee..."              /status → Jederzeit: Wo stehen wir?
 ```
 
+0. **SETUP** – Ersteinrichtung, CLAUDE.md + CONTINUITY.md konfigurieren
 1. **PRODUCT** – Idee besprechen, challengen, entscheiden (Build/Park/Kill)
 2. **PLANNER** – User Stories und Acceptance Criteria definieren
 3. **ARCHITECT** – Technisches Design und Datenmodell
@@ -208,4 +227,4 @@ MIT
 
 ---
 
-BMAD Lite v3.1 | Stand: 13. Februar 2026
+BMAD Lite v3.3 | Stand: März 2026
