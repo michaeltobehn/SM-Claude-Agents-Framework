@@ -20,8 +20,24 @@ echo "================================================"
 echo ""
 
 # 1. Prüfe ob wir in einem Projekt-Root sind
-if [ ! -f "package.json" ] && [ ! -f "turbo.json" ]; then
-  echo -e "${YELLOW}⚠️  Kein package.json oder turbo.json gefunden.${NC}"
+# Erkennt: Node.js, Turborepo, Python, Go, Rust, Ruby, Java, .NET, Git-Repos
+is_project_root() {
+  [ -f "package.json" ] || [ -f "turbo.json" ] || \
+  [ -f "pyproject.toml" ] || [ -f "requirements.txt" ] || [ -f "setup.py" ] || \
+  [ -f "go.mod" ] || [ -f "Cargo.toml" ] || [ -f "Gemfile" ] || \
+  [ -f "pom.xml" ] || [ -f "build.gradle" ] || [ -f "*.csproj" ] || \
+  [ -f "Makefile" ] || [ -f "CMakeLists.txt" ] || \
+  [ -d ".git" ] || [ -f "CLAUDE.md" ]
+}
+
+if ! is_project_root; then
+  echo -e "${YELLOW}⚠️  Kein Projekt-Root erkannt (kein package.json, .git, pyproject.toml etc.)${NC}"
+  # Bei curl|bash ist stdin nicht verfügbar – automatisch abbrechen mit Hinweis
+  if [ ! -t 0 ]; then
+    echo -e "${YELLOW}   Tipp: Erst ins Projekt-Verzeichnis wechseln, dann erneut ausführen.${NC}"
+    echo "Abgebrochen."
+    exit 1
+  fi
   read -p "Trotzdem fortfahren? (y/N) " -n 1 -r
   echo
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -33,30 +49,38 @@ fi
 # 2. Prüfe ob .claude/ bereits existiert
 if [ -d ".claude" ]; then
   echo -e "${YELLOW}⚠️  .claude/ Verzeichnis existiert bereits!${NC}"
-  echo ""
-  echo "Optionen:"
-  echo "  [b] Backup erstellen (.claude.backup-TIMESTAMP) und überschreiben"
-  echo "  [s] Überspringen (nur fehlende Templates installieren)"
-  echo "  [a] Abbrechen"
-  echo ""
-  read -p "Wahl (b/s/a): " -n 1 -r
-  echo
-  case $REPLY in
-    b|B)
-      BACKUP=".claude.backup-$(date +%Y%m%d-%H%M%S)"
-      cp -r .claude "$BACKUP"
-      echo -e "${GREEN}✅ Backup erstellt: $BACKUP${NC}"
-      INSTALL_AGENTS=true
-      ;;
-    s|S)
-      echo "Agents werden übersprungen."
-      INSTALL_AGENTS=false
-      ;;
-    *)
-      echo "Abgebrochen."
-      exit 0
-      ;;
-  esac
+  # Bei curl|bash: automatisch Backup erstellen und überschreiben
+  if [ ! -t 0 ]; then
+    BACKUP=".claude.backup-$(date +%Y%m%d-%H%M%S)"
+    cp -r .claude "$BACKUP"
+    echo -e "${GREEN}✅ Backup erstellt: $BACKUP (automatisch bei pipe-Installation)${NC}"
+    INSTALL_AGENTS=true
+  else
+    echo ""
+    echo "Optionen:"
+    echo "  [b] Backup erstellen (.claude.backup-TIMESTAMP) und überschreiben"
+    echo "  [s] Überspringen (nur fehlende Templates installieren)"
+    echo "  [a] Abbrechen"
+    echo ""
+    read -p "Wahl (b/s/a): " -n 1 -r
+    echo
+    case $REPLY in
+      b|B)
+        BACKUP=".claude.backup-$(date +%Y%m%d-%H%M%S)"
+        cp -r .claude "$BACKUP"
+        echo -e "${GREEN}✅ Backup erstellt: $BACKUP${NC}"
+        INSTALL_AGENTS=true
+        ;;
+      s|S)
+        echo "Agents werden übersprungen."
+        INSTALL_AGENTS=false
+        ;;
+      *)
+        echo "Abgebrochen."
+        exit 0
+        ;;
+    esac
+  fi
 else
   INSTALL_AGENTS=true
 fi
