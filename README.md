@@ -125,8 +125,10 @@ your-project/
 ## Workflow
 
 ```
+/setup → Ersteinrichtung (einmalig nach Installation)
+
 /product → /planner → /architect → /ux → /database → /builder → /tester → /reviewer
-    ↑                                                                          
+    ↑
     └── "Ich hab eine Idee..."              /status → Jederzeit: Wo stehen wir?
 ```
 
