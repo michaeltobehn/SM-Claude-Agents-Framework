@@ -32,9 +32,19 @@ is_project_root() {
 
 if ! is_project_root; then
   echo -e "${YELLOW}⚠️  Kein Projekt-Root erkannt (kein package.json, .git, pyproject.toml etc.)${NC}"
+  echo -e "${YELLOW}   Aktuelles Verzeichnis: $(pwd)${NC}"
+  echo ""
   # Bei curl|bash ist stdin nicht verfügbar – automatisch abbrechen mit Hinweis
   if [ ! -t 0 ]; then
-    echo -e "${YELLOW}   Tipp: Erst ins Projekt-Verzeichnis wechseln, dann erneut ausführen.${NC}"
+    echo -e "   ${YELLOW}So geht's:${NC}"
+    echo -e "     1. Wechsle ins Projekt-Verzeichnis:  ${GREEN}cd /pfad/zu/deinem/projekt${NC}"
+    echo -e "     2. Führe den Installer erneut aus:"
+    echo -e "        ${GREEN}curl -sSL https://raw.githubusercontent.com/michaeltobehn/SM-Claude-Agents-Framework/main/scripts/install.sh | bash${NC}"
+    echo ""
+    echo -e "   ${YELLOW}Oder erstelle ein neues Projekt:${NC}"
+    echo -e "     ${GREEN}mkdir mein-projekt && cd mein-projekt && git init${NC}"
+    echo -e "     Dann den Installer erneut ausführen."
+    echo ""
     echo "Abgebrochen."
     exit 1
   fi
